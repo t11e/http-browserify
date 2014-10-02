@@ -90,6 +90,22 @@ test('Test withCredentials param', function(t) {
   t.end();
 });
 
+test('Test preserving case of header names', function(t) {
+  t.plan(2);
+  var url = '/api/foo';
+
+  var request = http.request({ url: url, headers: {
+    Accept: 'application/json,text/plain,* / *'
+  } }, noop);
+  
+  request.xhr.setRequestHeader = function(header, value) {
+    t.equal( header, "Accept" );
+    t.equal( value, 'application/json,text/plain,* / *' );
+  };
+
+  request.end();
+});
+
 test('Test POST XHR2 types', function(t) {
   t.plan(3);
   var url = '/api/foo';
